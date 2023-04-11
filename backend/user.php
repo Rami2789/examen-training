@@ -96,6 +96,34 @@ class User extends DbConfig{
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
+    /**
+     * Checks if a user exists in the 'users' table of the database with the given email address.
+     *
+     * @param string $Email The email address of the user to check.
+     *
+     * @return object|false Returns an object representing the email address of the user if found, or false otherwise.
+     *
+     * @throws Exception If an error occurs while executing the SQL query.
+     */
+    public function check_user_exists($Email){
+        try{
+            $sql = "SELECT Email FROM users WHERE Email=:Email";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindParam(":Email", $Email);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_OBJ);
+        }catch(Exception $e)
+        {
+            echo $e->getMessage();
+        }
+    }
+
+    public function logout(){
+        session_start();
+        session_destroy();
+        header("Location:../login.php");
+    }
+
 }
 
 
