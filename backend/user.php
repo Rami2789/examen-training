@@ -42,7 +42,59 @@ class User extends DbConfig{
         }
     }
 
+    /**
+     * Logs a user in by checking their email and password against the database.
+     *
+     * @param array $data An associative array containing the user's email and password.
+     *
+     * @return void
+     *
+     * @throws Exception If the user does not exist or if the password is incorrect.
+     */
+    public function login($data){
+        try {
+            $user = $this->getUser($data['email']);
+            if (!$user) {
+                throw new Exception('Gebruiker bestaat niet.');
+            }
+            if(!password_verify($data['password'], $user->password)){
+                throw new Exception("wachtwoord is incorrect.");
+            }
+            session_start();
+            $_SESSION['ingelogd'] = true;
+            $_SESSION['email'] = $user->Email;
+            header("Location: index.php");
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
 
+    /**
+     * Gets all users from the database.
+     *
+     * @return array An array containing all users.
+     */
+    public function getUsers(){
+        $sql = "SELECT * FROM users";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    /**
+     * Gets a user with the given email from the database.
+     *
+     * @param string $email The email of the user to retrieve.
+     *
+     * @return object|false An object representing the user if found, false otherwise.
+     */
+    public function getUser($email){
+        $sql = "SELECT * FROM users WHERE Email = :email";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bindParam(":email", $email);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
 
 }
 
