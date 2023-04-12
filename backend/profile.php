@@ -14,14 +14,14 @@ if(!$_SESSION['ingelogd']|| !$_SESSION['ingelogd']){
     header("Location: ../login.php");
 }
 
-$user = $update->getUpdate($_SESSION['email']);
+$user = $update->getUpdate($_SESSION['id']);
 
 
 ?>
 
         <section class="profile">
         <?php
-           foreach ($update->getUpdate($_SESSION['email']) as $users) {
+           foreach ($update->getUpdate($_SESSION['id']) as $users) {
         ?>
             <form class="item-info" method="post">
                 <article  class="item-info1">

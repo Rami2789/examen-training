@@ -62,7 +62,7 @@ class User extends DbConfig{
             }
             session_start();
             $_SESSION['ingelogd'] = true;
-            $_SESSION['email'] = $user->email;
+            $_SESSION['id'] = $user->id;
             header("Location: backend/index.php");
         } catch (Exception $e) {
             echo $e->getMessage();
@@ -166,10 +166,10 @@ public function userUpdate($data){
  *
  * @return array Returns an array containing the user's information.
  */
-public function getUpdate($email){
-    $sql = "SELECT * FROM users WHERE email = :email";
+public function getUpdate($id){
+    $sql = "SELECT * FROM users WHERE id = :id";
     $stmt = $this->connect()->prepare($sql);
-    $stmt->bindParam(":email", $email);
+    $stmt->bindParam(":id", $id);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_OBJ);
 }
