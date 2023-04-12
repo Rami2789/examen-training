@@ -62,7 +62,7 @@ class User extends DbConfig{
             }
             session_start();
             $_SESSION['ingelogd'] = true;
-            $_SESSION['email'] = $user->Email;
+            $_SESSION['email'] = $user->email;
             header("Location: backend/index.php");
         } catch (Exception $e) {
             echo $e->getMessage();
@@ -126,6 +126,55 @@ class User extends DbConfig{
         session_destroy(); // destroy the session and delete all session data
         header("Location:../login.php"); // redirect to the login page
     }
+
+
+/**
+ * Updates the user's information in the database based on the given data.
+ *
+ * @param array $data An array containing the updated user information (voornaam, tussenvoegsel, achternaam, email, password).
+ *
+ * @throws Exception If the data could not be updated in the database.
+ */
+public function userUpdate($data){
+    try{
+        $sql = "UPDATE users SET voornaam=:voornaam, tussenvoegsel=:tussenvoegsel, achternaam=:achternaam, email=:email";
+        if (!empty($data['password'])) {
+            $sql .= ", password=:password";
+            $encryptedPassword = password_hash($data['password'], PASSWORD_BCRYPT, ['cost' => 12]);
+        }
+        $sql .= " WHERE email=:email";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bindParam(":voornaam", $data['voornaam']);
+        $stmt->bindParam(":tussenvoegsel", $data['tussenvoegsel']);
+        $stmt->bindParam(":achternaam", $data['achternaam']);
+        $stmt->bindParam(":email", $data['email']);
+        if (!empty($data['password'])) {
+            $stmt->bindParam(":password", $encryptedPassword);
+        }
+        if(!$stmt->execute()){
+            throw new Exception("Gegevens niet veranderd");
+        }
+    }catch(Exception $e){
+        echo $e->getMessage();
+    }
+}
+
+/**
+ * Retrieves the user's information from the database based on the given email.
+ *
+ * @param string $email The user's email.
+ *
+ * @return array Returns an array containing the user's information.
+ */
+public function getUpdate($email){
+    $sql = "SELECT * FROM users WHERE email = :email";
+    $stmt = $this->connect()->prepare($sql);
+    $stmt->bindParam(":email", $email);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
+
+    
 
 }
 
