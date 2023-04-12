@@ -63,7 +63,7 @@ class User extends DbConfig{
             session_start();
             $_SESSION['ingelogd'] = true;
             $_SESSION['email'] = $user->Email;
-            header("Location: index.php");
+            header("Location: backend/index.php");
         } catch (Exception $e) {
             echo $e->getMessage();
         }

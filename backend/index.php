@@ -2,7 +2,7 @@
 
 session_start();
 if(!$_SESSION['ingelogd']){
-    header("Location: login.php");
+    header("Location: ../login.php");
 }
 ?>
 
