@@ -2,7 +2,7 @@
 /**
  * Includes the necessary files and creates a User object.
  */
-require_once 'backend/user.php';
+require_once 'backend/class/user.php';
 $user = new User();
 
 /**

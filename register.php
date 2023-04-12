@@ -4,7 +4,7 @@
  */
 
 // Include the User class
-require_once 'backend/user.php';
+require_once 'backend/class/user.php';
 
 // Create a new instance of the User class
 $user = new User();
