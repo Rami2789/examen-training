@@ -118,10 +118,13 @@ class User extends DbConfig{
         }
     }
 
-    public function logout(){
-        session_start();
-        session_destroy();
-        header("Location:../login.php");
+    /**
+     * Logs out the user by destroying the current session and redirecting to the login page.
+     */
+    public function uitloggen(){
+        session_start(); // start the session
+        session_destroy(); // destroy the session and delete all session data
+        header("Location:../login.php"); // redirect to the login page
     }
 
 }
