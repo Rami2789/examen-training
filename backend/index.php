@@ -7,4 +7,5 @@ if(!$_SESSION['ingelogd']){
 ?>
 
 
+<a href="profile.php">Profile</a>
 <a href="logout.php">Logout</a>
