@@ -4,9 +4,12 @@ require_once 'class/user.php';
 $update = new User();
 
 if (isset($_POST['update'])) {
-
     $update->userUpdate($_POST);
+}
 
+if (isset($_POST["delete"])) {
+    $update->deleteUser($_POST['id']);
+    header("Location: ../login.php");
 }
 
 session_start();
@@ -14,14 +17,15 @@ if(!$_SESSION['ingelogd']|| !$_SESSION['ingelogd']){
     header("Location: ../login.php");
 }
 
-$user = $update->getUpdate($_SESSION['id']);
+
+$user = $update->getUserData($_SESSION['id']);
 
 
 ?>
 
         <section class="profile">
         <?php
-           foreach ($update->getUpdate($_SESSION['id']) as $users) {
+           foreach ($update->getUserData($_SESSION['id']) as $users) {
         ?>
             <form class="item-info" method="post">
                 <article  class="item-info1">
@@ -37,14 +41,16 @@ $user = $update->getUpdate($_SESSION['id']);
                     <input type="text" value='<?php echo $users->email;?>' name="email" placeholder="Email">
                     <p>Wachtwoord</p>
                     <input type="password" name="password" placeholder="Password">
+                    <input type="hidden" name="id" value="<?php echo $users->id; ?>">
                     <input type="submit" name="update" value="Update">
+                    <input type="submit" name="delete" value="Delete" onclick="return confirmDelete();">
                 </article>
             </form>
             <?php } ?>
         </section>
 
 
-        <section class="profile">
+        <!-- <section class="profile">
             <form class="item-info" method="post">
                 <article  class="item-info1">
                     <p>voornaam</p>
@@ -61,7 +67,7 @@ $user = $update->getUpdate($_SESSION['id']);
                     <input type="password" name="password" placeholder="Password">
                     <input type="submit" name="update" value="Update">
                 </article>
-                
-                
             </form>
-        </section>
+        </section> -->
+
+<script src="../js/profile.js"></script>
