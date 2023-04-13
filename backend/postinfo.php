@@ -33,14 +33,14 @@ if(isset($_POST['create'])){
     </section>
 
     <main>
-      <section class="content">
-        <?php 
-            $post = new Post();
-            foreach ($post->getComments($_GET["posts"]) as $postData) { ?>
-            <article class="post">
-                <?php echo $postData->author . "<br>"; ?>
-                <?php echo $postData->message . "<br>"; ?>
-            </article>
-        <?php } ?>
-      </section>
+        <section class="content">
+            <?php 
+                $post = new Post();
+                foreach ($post->getComments($_GET["posts"]) as $postData) { ?>
+                <article class="post">
+                    <?php echo $postData->author . "<br>"; ?>
+                    <?php echo $postData->message . "<br>"; ?>
+                </article>
+            <?php } ?>
+        </section>
     </main>
