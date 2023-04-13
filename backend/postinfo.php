@@ -1,10 +1,10 @@
 <?php
-require_once 'partial/header.php';
-require_once 'class/post.php';
-$post = new Post();
-if(isset($_POST['create'])){
-	echo $post->comment($_POST);
-}
+    require_once 'partial/header.php';
+    require_once 'class/post.php';
+    $post = new Post();
+    if(isset($_POST['create'])){
+        echo $post->comment($_POST);
+    }
 ?>
 
 
@@ -23,24 +23,24 @@ if(isset($_POST['create'])){
 ?>
 
 
-    <section class="form">
-	    	<form method="post">
-            <input type="text" name="naam" placeholder="Naam" required>
-            <input type="text" name="message" placeholder="Message" required>
-            <input type="number" name="postId" value="<?php echo $_GET['posts'] ?>" readonly hidden>
-            <input type="submit" name="create" value="Comment">
-	    	</form>
-    </section>
+<section class="form">
+        <form method="post">
+        <input type="text" name="naam" placeholder="Naam" required>
+        <input type="text" name="message" placeholder="Message" required>
+        <input type="number" name="postId" value="<?php echo $_GET['posts'] ?>" readonly hidden>
+        <input type="submit" name="create" value="Comment">
+        </form>
+</section>
 
-    <main>
-        <section class="content">
-            <?php 
-                $post = new Post();
-                foreach ($post->getComments($_GET["posts"]) as $postData) { ?>
-                <article class="post">
-                    <?php echo $postData->author . "<br>"; ?>
-                    <?php echo $postData->message . "<br>"; ?>
-                </article>
-            <?php } ?>
-        </section>
-    </main>
+<main>
+    <section class="content">
+        <?php 
+            $post = new Post();
+            foreach ($post->getComments($_GET["posts"]) as $postData) { ?>
+            <article class="post">
+                <?php echo $postData->author . "<br>"; ?>
+                <?php echo $postData->message . "<br>"; ?>
+            </article>
+        <?php } ?>
+    </section>
+</main>
