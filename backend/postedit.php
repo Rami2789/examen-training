@@ -24,15 +24,11 @@ if (isset($_POST['delete']) || isset($_GET['delete'])) {
             <input type="text" name="description" value="<?php echo $post->description; ?>">
             <input type="text" name="body" value="<?php echo $post->body; ?>">
             <input type="submit" name="update" value="Update">
-            <input type="submit" name="delete" value="delete">
+            <input type="submit" name="delete" value="delete" onclick="return confirmDelete();">
             </form>
         </article>
     <?php }
 ?>
 
-
-
-<?php
-require_once 'partial/footer.php';
-?>
+<script src="../js/posts.js"></script>
 

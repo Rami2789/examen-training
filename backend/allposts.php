@@ -17,12 +17,10 @@ $post = new Post();
           <?php echo $postData->description . "<br>"; ?>
           <?php echo $postData->body . "<br>"; ?>
           <a href="postedit.php?posts=<?php echo $postData->id ?>">Edit</a>
-          <a href="postedit.php?posts=<?php echo $postData->id ?>&delete=true">Delete</a>
+          <a href="postedit.php?posts=<?php echo $postData->id ?>&delete=true" onclick="return confirmDelete();">Delete</a>
         </article>
         <?php } ?>
       </section>
     </main>
 
-<?php
-require_once 'partial/footer.php';
-?>
+<script src="../js/posts.js"></script>
