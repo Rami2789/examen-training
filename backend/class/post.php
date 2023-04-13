@@ -28,7 +28,7 @@ class Post extends DbConfig{
             echo $e->getMessage();
         }
     }
-
+    
     /**
      * Updates a post with given data and ID.
      *
@@ -107,6 +107,39 @@ class Post extends DbConfig{
         }
     }
 
+    /**
+     * Adds a comment to a post in the database.
+     *
+     * @param array $data The data associated with the comment to be added
+     * @throws Exception if the comment data cannot be inserted into the database
+     */
+    public function comment($data){
+        try{
+            $sql = "INSERT INTO comments (message, author, post_id) VALUES (:message, :author, :post_id)";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindParam(":message", $data['message']);
+            $stmt->bindParam(":author", $data['naam']);
+            $stmt->bindParam(":post_id", $data['postId']);
+            if(!$stmt->execute()){
+                throw new Exception("Message kon niet worden geplaats");
+            }
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
+    /**
+     * Retrieves all comments for a specific post
+     * @param int $id The id of the post
+     * @return array An array of comment objects
+     */
+    public function getComments($id){
+        $sql = "SELECT * FROM comments WHERE post_id = :postId";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bindParam(":postId", $id);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
 
 }
 
