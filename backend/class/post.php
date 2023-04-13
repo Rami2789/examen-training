@@ -57,6 +57,55 @@ class Post extends DbConfig{
         }
     }
 
+    /**
+     * Get all posts from a specific user.
+     * 
+     * @param int $id The ID of the user.
+     * @return array An array of post objects.
+     */
+    public function getPostFromUser($id){
+        $sql = "SELECT * FROM posts WHERE author = :author AND deleted = 0";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bindParam(":author", $id);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+    
+    /**
+     * Get a specific post with information about its author.
+     * 
+     * @param int $PostID The ID of the post.
+     * @return array An array containing the post object and its author information.
+     */
+    public function getPostID($PostID){
+        $sql = "SELECT * FROM posts
+                JOIN users on users.id = posts.author
+                WHERE posts.id = :postID";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bindParam(':postID', $PostID);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    /**
+     * Deletes a post by setting its "deleted" field to 1 in the database.
+     *
+     * @param array $data The data associated with the post to be deleted
+     * @param int $id The ID of the post to be deleted
+     * @throws Exception if the post data cannot be updated in the database
+     */
+    public function deletePost($data, $id){
+        try{
+            $sql = "UPDATE posts SET  deleted = 1 WHERE id= :id";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindParam(":id", $id);
+            if(!$stmt->execute()){
+                throw new Exception("Gegevens niet veranderd");
+            }
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
 
 
 }
