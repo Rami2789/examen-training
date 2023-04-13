@@ -29,7 +29,36 @@ class Post extends DbConfig{
         }
     }
 
-    
+    /**
+     * Updates a post with given data and ID.
+     *
+     * @param array $data The data to update the post with.
+     * @param int $id The ID of the post to update.
+     * @throws Exception If the update query fails.
+     */
+    public function editpost($data, $id){
+        try{
+            $sql = "UPDATE posts SET  title=:title, description=:description, body=:body WHERE id= :id";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindParam(":title", $data['title']);
+            $stmt->bindParam(":description", $data['description']);
+            $stmt->bindParam(":body", $data['body']);
+            $stmt->bindParam(":id", $id);
+            if(!$stmt->execute()){
+                throw new Exception("Gegevens niet veranderd");
+            }
+            session_start();
+            $post = new Post();
+            foreach ($post->getPostFromUser($_SESSION['id']) as $postData) {
+                header("Location: postinfo.php?posts=$postData->id");
+            }
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
+
+
 }
 
 ?>
