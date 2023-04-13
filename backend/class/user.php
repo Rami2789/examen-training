@@ -53,16 +53,17 @@ class User extends DbConfig{
      */
     public function login($data){
         try {
-            $user = $this->getUser($data['email']);
+            $user = $this->getUserData($data['email']);
             if (!$user) {
                 throw new Exception('Gebruiker bestaat niet.');
             }
-            if(!password_verify($data['password'], $user->password)){
+            if(!password_verify($data['password'], $user[0]->password)){
                 throw new Exception("wachtwoord is incorrect.");
             }
             session_start();
             $_SESSION['ingelogd'] = true;
-            $_SESSION['id'] = $user->id;
+            $_SESSION['id'] = $user[0]->id;
+            $_SESSION['email'] = $user[0]->email;
             header("Location: backend/index.php");
         } catch (Exception $e) {
             echo $e->getMessage();
@@ -70,30 +71,19 @@ class User extends DbConfig{
     }
 
     /**
-     * Gets all users from the database.
-     *
-     * @return array An array containing all users.
+     * Retrieves user data by id or email.
+     * 
+     * @param $identifier int|string - User id or email.
+     * 
+     * @return array - Array of user data.
      */
-    public function getUsers(){
-        $sql = "SELECT * FROM users";
+    public function getUserData($identifier){
+        $sql = "SELECT * FROM users WHERE id = :id OR email = :email AND deleted = 0";
         $stmt = $this->connect()->prepare($sql);
+        $stmt->bindParam(":id", $identifier);
+        $stmt->bindParam(":email", $identifier);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
-    }
-
-    /**
-     * Gets a user with the given email from the database.
-     *
-     * @param string $email The email of the user to retrieve.
-     *
-     * @return object|false An object representing the user if found, false otherwise.
-     */
-    public function getUser($email){
-        $sql = "SELECT * FROM users WHERE Email = :email";
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->bindParam(":email", $email);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
     /**
@@ -128,52 +118,52 @@ class User extends DbConfig{
     }
 
 
-/**
- * Updates the user's information in the database based on the given data.
- *
- * @param array $data An array containing the updated user information (voornaam, tussenvoegsel, achternaam, email, password).
- *
- * @throws Exception If the data could not be updated in the database.
- */
-public function userUpdate($data){
-    try{
-        $sql = "UPDATE users SET voornaam=:voornaam, tussenvoegsel=:tussenvoegsel, achternaam=:achternaam, email=:email";
-        if (!empty($data['password'])) {
-            $sql .= ", password=:password";
-            $encryptedPassword = password_hash($data['password'], PASSWORD_BCRYPT, ['cost' => 12]);
+    /**
+     * Updates the user's information in the database based on the given data.
+     *
+     * @param array $data An array containing the updated user information (voornaam, tussenvoegsel, achternaam, email, password).
+     *
+     * @throws Exception If the data could not be updated in the database.
+     */
+    public function userUpdate($data){
+        try{
+            $sql = "UPDATE users SET voornaam=:voornaam, tussenvoegsel=:tussenvoegsel, achternaam=:achternaam, email=:email";
+            if (!empty($data['password'])) {
+                $sql .= ", password=:password";
+                $encryptedPassword = password_hash($data['password'], PASSWORD_BCRYPT, ['cost' => 12]);
+            }
+            $sql .= " WHERE id=:id";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindParam(":voornaam", $data['voornaam']);
+            $stmt->bindParam(":tussenvoegsel", $data['tussenvoegsel']);
+            $stmt->bindParam(":achternaam", $data['achternaam']);
+            $stmt->bindParam(":email", $data['email']);
+            $stmt->bindParam(":id", $data['id']);
+            if (!empty($data['password'])) {
+                $stmt->bindParam(":password", $encryptedPassword);
+            }
+            if(!$stmt->execute()){
+                throw new Exception("Gegevens niet veranderd");
+            }
+        }catch(Exception $e){
+            echo $e->getMessage();
         }
-        $sql .= " WHERE email=:email";
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->bindParam(":voornaam", $data['voornaam']);
-        $stmt->bindParam(":tussenvoegsel", $data['tussenvoegsel']);
-        $stmt->bindParam(":achternaam", $data['achternaam']);
-        $stmt->bindParam(":email", $data['email']);
-        if (!empty($data['password'])) {
-            $stmt->bindParam(":password", $encryptedPassword);
-        }
-        if(!$stmt->execute()){
-            throw new Exception("Gegevens niet veranderd");
-        }
-    }catch(Exception $e){
-        echo $e->getMessage();
     }
-}
 
-/**
- * Retrieves the user's information from the database based on the given email.
- *
- * @param string $email The user's email.
- *
- * @return array Returns an array containing the user's information.
- */
-public function getUpdate($id){
-    $sql = "SELECT * FROM users WHERE id = :id";
-    $stmt = $this->connect()->prepare($sql);
-    $stmt->bindParam(":id", $id);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_OBJ);
-}
-
+    /**
+    * Soft deletes a user from the database by setting the 'deleted' flag to 1
+    *
+    *@param int $id The id of the user to delete
+    *
+    *@return array An array of objects representing the deleted user, or an empty array if the user was not found
+    */
+    public function deleteUser($id){
+        $sql = "UPDATE users SET deleted = 1 WHERE id = :id";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bindParam(":id", $id);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
     
 
 }
