@@ -1,11 +1,4 @@
 <?php
 
-session_start();
-if(!$_SESSION['ingelogd']){
-    header("Location: ../login.php");
-}
+require_once "partial/header.php";
 ?>
-
-
-<a href="profile.php">Profile</a>
-<a href="logout.php">Logout</a>

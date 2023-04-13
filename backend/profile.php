@@ -1,4 +1,5 @@
 <?php
+require_once "partial/header.php";
 require_once 'class/user.php';
 
 $update = new User();
@@ -12,7 +13,6 @@ if (isset($_POST["delete"])) {
     header("Location: ../login.php");
 }
 
-session_start();
 if(!$_SESSION['ingelogd']|| !$_SESSION['ingelogd']){
     header("Location: ../login.php");
 }

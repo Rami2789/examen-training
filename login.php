@@ -1,4 +1,6 @@
 <?php
+require_once "partial/header.php";
+
 /**
  * Includes the necessary files and creates a User object.
  */

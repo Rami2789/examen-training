@@ -1,4 +1,6 @@
 <?php
+require_once "partial/header.php";
+
 /**
  * The following code registers a new user by creating an instance of the User class and calling its register method.
  */
