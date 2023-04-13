@@ -88,6 +88,18 @@ class Post extends DbConfig{
     }
 
     /**
+     * Retrieves all posts from the database.
+     *
+     * @return array An array of post objects
+     */
+    public function getPost(){
+        $sql = "SELECT * FROM posts WHERE deleted = 0";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    /**
      * Deletes a post by setting its "deleted" field to 1 in the database.
      *
      * @param array $data The data associated with the post to be deleted
