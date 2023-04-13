@@ -15,8 +15,6 @@ require_once 'class/Post.php';
             <p>Body: <?php echo $post->body; ?></p>
             <p>Created on: <?php echo $post->created_on; ?></p>
             <p>Updated on:<?php echo $post->updated_on; ?></p>
-            <a href="postedit.php?posts=<?php echo $post->id ?>">Edit</a>
-            <a href="postedit.php?posts=<?php echo $post->id ?>&delete=true">Delete</a>
         </article>
     <?php }
 ?>
