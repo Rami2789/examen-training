@@ -19,16 +19,15 @@
             <p>Created on: <?php echo $post->created_on; ?></p>
             <p>Updated on:<?php echo $post->updated_on; ?></p>
         </article>
-    <?php }
-?>
+    <?php } ?>
 
 
 <section class="form">
         <form method="post">
-        <input type="text" name="naam" placeholder="Naam" required>
-        <input type="text" name="message" placeholder="Message" required>
-        <input type="number" name="postId" value="<?php echo $_GET['posts'] ?>" readonly hidden>
-        <input type="submit" name="create" value="Comment">
+            <input type="text" name="naam" placeholder="Naam" required>
+            <input type="text" name="message" placeholder="Message" required>
+            <input type="number" name="postId" value="<?php echo $_GET['posts'] ?>" readonly hidden>
+            <input type="submit" name="create" value="Comment">
         </form>
 </section>
 
