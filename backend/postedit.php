@@ -9,7 +9,7 @@ if (isset($_POST['update'])) {
 
 if (isset($_POST['delete']) || isset($_GET['delete'])) {
     $post->deletePost($_POST, $_GET['posts']);
-    header("Location: allposts.php");
+    header("Location: myposts.php");
 }
 ?>
 

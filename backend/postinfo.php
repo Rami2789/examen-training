@@ -5,6 +5,11 @@
     if(isset($_POST['create'])){
         echo $post->comment($_POST);
     }
+
+    if (isset($_POST["deletecomment"])) {
+        $post->deleteComment($_POST['CommentID']);
+    }
+    
 ?>
 
 
@@ -39,7 +44,15 @@
             <article class="post">
                 <?php echo $postData->author . "<br>"; ?>
                 <?php echo $postData->message . "<br>"; ?>
+                <form method="post">
+                    <input type="number" name="postId" value="<?php echo $_GET['posts'] ?>" readonly hidden>
+                    <input type="number" name="CommentID" value="<?php echo $postData->id ?>" readonly hidden>
+                    <input type="submit" name="deletecomment" value="Delete" onclick="return deleteComment();">
+                </form>
             </article>
         <?php } ?>
     </section>
 </main>
+
+
+<script src="../js/posts.js"></script>

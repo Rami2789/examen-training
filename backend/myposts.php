@@ -14,7 +14,7 @@ $post = new Post();
                 <?php echo $postData->description . "<br>"; ?>
                 <?php echo $postData->body . "<br>"; ?>
                 <a href="postedit.php?posts=<?php echo $postData->id ?>">Edit</a>
-                <a href="postedit.php?posts=<?php echo $postData->id ?>&delete=true" onclick="return confirmDelete();">Delete</a>
+                <a name="deletepost" href="postedit.php?posts=<?php echo $postData->id ?>&delete=true" onclick="return deletePost();">Delete</a>
             </article>
         <?php } ?>
       </section>

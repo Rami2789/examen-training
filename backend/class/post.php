@@ -23,7 +23,7 @@ class Post extends DbConfig{
             if(!$stmt->execute()){
                 throw new Exception("Post kon niet aangemaakt worden");
             }
-            header("Location: allposts.php");
+            header("Location: myposts.php");
         }catch(Exception $e){
             echo $e->getMessage();
         }
@@ -112,7 +112,7 @@ class Post extends DbConfig{
             $stmt = $this->connect()->prepare($sql);
             $stmt->bindParam(":id", $id);
             if(!$stmt->execute()){
-                throw new Exception("Gegevens niet veranderd");
+                throw new Exception("Post kon niet verwijderd worden");
             }
         }catch(Exception $e){
             echo $e->getMessage();
@@ -146,9 +146,17 @@ class Post extends DbConfig{
      * @return array An array of comment objects
      */
     public function getComments($id){
-        $sql = "SELECT * FROM comments WHERE post_id = :postId";
+        $sql = "SELECT * FROM comments WHERE post_id = :postId AND deleted = 0";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bindParam(":postId", $id);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function deleteComment($id){
+        $sql = "UPDATE comments SET deleted = 1 WHERE id = :id";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bindParam(":id", $id);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
