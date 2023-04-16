@@ -21,6 +21,8 @@ if (isset($_POST['login'])) {
 if (isset($_SESSION['ingelogd'])) {
   if (isset($_SESSION['admin'])) {
     header("Location: backend/admin-dashboard.php");
+  } elseif (isset($_SESSION['eigenaar'])) {
+    header("Location: backend/eigenaar-dashboard.php");
   } else {
     header("Location: backend/user-dashboard.php");
   }

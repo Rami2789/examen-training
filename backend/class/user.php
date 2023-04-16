@@ -66,7 +66,9 @@ class User extends DbConfig{
             $_SESSION['email'] = $user[0]->email;
             if($user[0]->rollenid == 1) {
                 $_SESSION['admin'] = true;
-            }
+            } elseif($user[0]->rollenid == 3) {
+                $_SESSION['eigenaar'] = true;
+            } 
             // header("Location: backend/index.php");
         } catch (Exception $e) {
             echo $e->getMessage();

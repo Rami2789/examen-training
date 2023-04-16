@@ -11,6 +11,12 @@ if(isset($_SESSION['ingelogd']) && $_SESSION['ingelogd'] === true) {
         <a href="profile.php">Profile</a>
         <a href="logout.php">Logout</a>
         <?php
+    } else if(isset($_SESSION['eigenaar']) && $_SESSION['eigenaar'] === true) {
+        ?>
+        <a href="eigenaar-dashboard.php">Home</a>
+        <a href="allposts.php">All posts</a>
+        <a href="logout.php">Logout</a>
+        <?php
     } else {
         ?>
         <a href="user-dashboard.php">Home</a>
