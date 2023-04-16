@@ -42,8 +42,8 @@ if(isset($_POST['register'])){
           <select name="option" class="pakket">
             <option name="" value=""></option>
             <option name="basis" value="1">medewerker</option>
-            <option name="extra" value="2">eigenaar</option>
-            <option name="platinum" value="3">klant</option>
+            <option name="extra" value="2">klant</option>
+            <option name="platinum" value="3">eigenaar</option>
           </select>
 	    		<input type="submit" name="register" value="Register">
           <p class="login">
