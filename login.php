@@ -17,6 +17,15 @@ $user = new User();
 if (isset($_POST['login'])) {
   echo $user->login($_POST);
 }
+
+if (isset($_SESSION['ingelogd'])) {
+  if (isset($_SESSION['admin'])) {
+    header("Location: backend/admin-dashboard.php");
+  } else {
+    header("Location: backend/user-dashboard.php");
+  }
+  exit();
+}
 ?>
 
 

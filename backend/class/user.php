@@ -64,11 +64,15 @@ class User extends DbConfig{
             $_SESSION['ingelogd'] = true;
             $_SESSION['id'] = $user[0]->id;
             $_SESSION['email'] = $user[0]->email;
-            header("Location: backend/index.php");
+            if($user[0]->rollenid == 1) {
+                $_SESSION['admin'] = true;
+            }
+            // header("Location: backend/index.php");
         } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
+    
 
     /**
      * Retrieves user data by id or email.
