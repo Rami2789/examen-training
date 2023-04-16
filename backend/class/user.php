@@ -171,6 +171,43 @@ class User extends DbConfig{
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
     
+    
+
+    /**
+    * Creates a new user in the database with the given data
+    * @param array $data An associative array containing user data, including 'voornaam', 'tussenvoegsel', 'achternaam', 'gebruikersnaam', 'email', 'password', and optionally 'option'
+    *
+    * @return array An array of objects representing the newly created user, or an error message if the account could not be created
+    *
+    * @throws Exception if the password and confirmation password do not match or if the account could not be created for any other reason
+    */
+    public function createUser($data){
+        try{
+            if($data['password'] != $data['conf-password']){
+                throw new Exception("Wachtwoorden komen niet overeen met elkaar.");
+            }
+            $sql = "INSERT INTO users (voornaam, tussenvoegsel, achternaam, gebruikersnaam, email, password, rollenid) VALUES (:voornaam, :tussenvoegsel, :achternaam, :gebruikersnaam, :email, :password, :rollenid)";
+            $encryptedPassword = password_hash($data['password'], PASSWORD_BCRYPT, ['cost' => 12]);
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindParam(":voornaam", $data['voornaam']);
+            $stmt->bindParam(":tussenvoegsel", $data['tussenvoegsel']);
+            $stmt->bindParam(":achternaam", $data['achternaam']);
+            $stmt->bindParam(":gebruikersnaam", $data['voornaam']);
+            $stmt->bindParam(":email", $data['email']);
+            // $stmt->bindParam(":telnr", $data['telnr']);
+            if(isset($data['option'])) {
+                $stmt->bindParam(":rollenid", $data['option']);
+            } else {
+                $stmt->bindValue(":rollenid", 2);
+            }
+            $stmt->bindParam(":password", $encryptedPassword);
+            if(!$stmt->execute()){
+                throw new Exception("Account kon niet aangemaakt worden");
+            }
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
 
 }
 
