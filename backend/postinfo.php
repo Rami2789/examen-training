@@ -21,6 +21,7 @@
             <p>Tietel: <?php echo $post->title; ?></p>
             <p>Description: <?php echo $post->description; ?></p>
             <p>Body: <?php echo $post->body; ?></p>
+            <p>Kapster: <?php echo $post->kapster; ?></p>
             <p>Created on: <?php echo $post->created_on; ?></p>
             <p>Updated on:<?php echo $post->updated_on; ?></p>
         </article>

@@ -18,7 +18,7 @@ if(isset($_POST['create'])){
 				<input type="text" name="title" placeholder="Title" required>
 	    		<input type="text" name="description" placeholder="Description" required>
 	    		<input type="text" name="body" placeholder="Body" required>
-				<select name="option" class="pakket">
+				<select name="option" class="pakket" required>
 					<option name="" value=""></option>
 					<option name="basis" value="1">Rami</option>
 					<option name="extra" value="2">Hanin</option>

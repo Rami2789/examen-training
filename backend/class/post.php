@@ -11,24 +11,41 @@ class Post extends DbConfig{
      *
      * @return void
      */
-    public function createPosts($data){
-        $author = $_SESSION['id'];
-        try{
-            $sql = "INSERT INTO posts (title, description, body, author, kapster) VALUES (:title, :description, :body, :auth, :kapster)";
-            $stmt = $this->connect()->prepare($sql);
-            $stmt->bindParam(":title", $data['title']);
-            $stmt->bindParam(":description", $data['description']);
-            $stmt->bindParam(":body", $data['body']);
-            $stmt->bindParam(":auth", $author);
-            $stmt->bindParam(":kapster", $data['option']);
-            if(!$stmt->execute()){
-                throw new Exception("Post kon niet aangemaakt worden");
-            }
-            header("Location: myposts.php");
-        }catch(Exception $e){
-            echo $e->getMessage();
+public function createPosts($data){
+    $author = $_SESSION['id'];
+    try{
+        // Check if a post with the same title already exists
+        $sql_check = "SELECT COUNT(*) FROM posts WHERE title = :title AND description = :description AND body = :body AND author = :auth AND kapster = :kapster";
+        $stmt_check = $this->connect()->prepare($sql_check);
+        $stmt_check->bindParam(":title", $data['title']);
+        $stmt_check->bindParam(":description", $data['description']);
+        $stmt_check->bindParam(":body", $data['body']);
+        $stmt_check->bindParam(":auth", $author);
+        $stmt_check->bindParam(":kapster", $data['option']);
+        $stmt_check->execute();
+        $count = $stmt_check->fetchColumn();
+
+        if ($count > 0) {
+            throw new Exception("This post already exists");
         }
+
+        // Create a new post if no post with the same title exists
+        $sql_insert = "INSERT INTO posts (title, description, body, author, kapster) VALUES (:title, :description, :body, :auth, :kapster)";
+        $stmt_insert = $this->connect()->prepare($sql_insert);
+        $stmt_insert->bindParam(":title", $data['title']);
+        $stmt_insert->bindParam(":description", $data['description']);
+        $stmt_insert->bindParam(":body", $data['body']);
+        $stmt_insert->bindParam(":auth", $author);
+        $stmt_insert->bindParam(":kapster", $data['option']);
+        if(!$stmt_insert->execute()){
+            throw new Exception("Post kon niet aangemaakt worden");
+        }
+        header("Location: myposts.php");
+    }catch(Exception $e){
+        echo $e->getMessage();
     }
+}
+
     
     /**
      * Updates a post with given data and ID.
