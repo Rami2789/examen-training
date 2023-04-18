@@ -70,7 +70,7 @@ class User extends DbConfig{
                 $_SESSION['eigenaar'] = true;
             } 
             // header("Location: backend/index.php");
-        } catch (Exception $e) {
+        } catch (Exception $e){
             echo $e->getMessage();
         }
     }
@@ -84,12 +84,16 @@ class User extends DbConfig{
      * @return array - Array of user data.
      */
     public function getUserData($identifier){
-        $sql = "SELECT * FROM users WHERE id = :id OR email = :email AND deleted = 0";
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->bindParam(":id", $identifier);
-        $stmt->bindParam(":email", $identifier);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
+        try{
+            $sql = "SELECT * FROM users WHERE id = :id OR email = :email AND deleted = 0";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindParam(":id", $identifier);
+            $stmt->bindParam(":email", $identifier);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_OBJ);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
     }
 
     /**
@@ -108,8 +112,7 @@ class User extends DbConfig{
             $stmt->bindParam(":Email", $Email);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_OBJ);
-        }catch(Exception $e)
-        {
+        }catch(Exception $e){
             echo $e->getMessage();
         }
     }
@@ -164,14 +167,23 @@ class User extends DbConfig{
     *@return array An array of objects representing the deleted user, or an empty array if the user was not found
     */
     public function deleteUser($id){
-        $sql = "UPDATE users SET deleted = 1 WHERE id = :id";
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->bindParam(":id", $id);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
+        try{
+            $sql = "UPDATE users SET deleted = 1 WHERE id = :id";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindParam(":id", $id);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_OBJ);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
     }
     
     
+    //---------------------------------------------------------------------------------------//
+    /**
+     * Down here is the code for the admin users who can create, read, update and delete users.
+     */
+    //---------------------------------------------------------------------------------------//
 
     /**
     * Creates a new user in the database with the given data
@@ -208,6 +220,76 @@ class User extends DbConfig{
             echo $e->getMessage();
         }
     }
+
+    /**
+     * getUsers retrieves all active users from the database
+     * 
+     * @return array An array of objects representing the active users in the database, or an error message if the retrieval failed
+     * 
+     * @throws Exception if the retrieval of the users fails for any reason
+     */
+    public function getUsers(){
+        try{
+            $sql = "SELECT * FROM users WHERE deleted = 0";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_OBJ);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
+
+    /**
+     * getUserById retrieves a user with the specified ID from the database
+     * 
+     * @param int $userId The ID of the user to retrieve
+     * 
+     * @return object An object representing the user with the specified ID, or an error message if the retrieval failed
+     * 
+     * @throws Exception if the retrieval of the user fails for any reason
+     */
+    public function getUserById($userId) {
+        try {
+            $sql = "SELECT * FROM users WHERE id = :userId";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindParam(":userId", $userId);
+            $stmt->execute();
+            $userData = $stmt->fetch(PDO::FETCH_OBJ);
+            return $userData;
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+    
+
+    /**
+     * userUpdateEigenaar updates a user with the specified data in the database
+     * 
+     * @param array $data An associative array containing user data to update, including 'voornaam', 'tussenvoegsel', 'achternaam', 'gebruikersnaam', 'email', 'password', and optionally 'option'
+     * 
+     * @return bool true if the update was successful, or false if it failed
+     * 
+     * @throws Exception if the update of the user fails for any reason
+     */
+    public function userUpdateEigenaar($data){
+        try{
+            $sql = "UPDATE users SET voornaam = :voornaam, tussenvoegsel = :tussenvoegsel, achternaam = :achternaam, gebruikersnaam = :gebruikersnaam, email = :email, rollenid = :rollenid WHERE id = :userId";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindValue(":voornaam", $data['voornaam']);
+            $stmt->bindValue(":tussenvoegsel", $data['tussenvoegsel']);
+            $stmt->bindValue(":achternaam", $data['achternaam']);
+            $stmt->bindValue(":gebruikersnaam", $data['gebruikersnaam']);
+            $stmt->bindValue(":email", $data['email']);
+            $stmt->bindValue(":rollenid", $data['option']);
+            $stmt->bindValue(":userId", $data['userId']);
+            return $stmt->execute();
+        } catch(PDOException $e){
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+    
 
 }
 
