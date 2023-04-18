@@ -109,11 +109,15 @@ class Post extends DbConfig{
      * @return array An array of post objects.
      */
     public function getPostFromUser($id){
-        $sql = "SELECT * FROM posts WHERE author = :author AND deleted = 0";
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->bindParam(":author", $id);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
+        try{
+            $sql = "SELECT * FROM posts WHERE author = :author AND deleted = 0";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindParam(":author", $id);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_OBJ);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
     }
     
     /**
@@ -123,13 +127,17 @@ class Post extends DbConfig{
      * @return array An array containing the post object and its author information.
      */
     public function getPostID($PostID){
-        $sql = "SELECT * FROM posts
-                JOIN users on users.id = posts.author
-                WHERE posts.id = :postID";
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->bindParam(':postID', $PostID);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
+        try{
+            $sql = "SELECT * FROM posts
+                    JOIN users on users.id = posts.author
+                    WHERE posts.id = :postID";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindParam(':postID', $PostID);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_OBJ);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
     }
 
     /**
@@ -138,10 +146,14 @@ class Post extends DbConfig{
      * @return array An array of post objects
      */
     public function getPost(){
-        $sql = "SELECT * FROM posts WHERE deleted = 0";
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
+        try{
+            $sql = "SELECT * FROM posts WHERE deleted = 0";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_OBJ);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
     }
 
     /**
@@ -195,11 +207,15 @@ class Post extends DbConfig{
      * @throws Exception if the password and confirmation password do not match or if the account could not be created for any other reason
      */
     public function getComments($id){
-        $sql = "SELECT * FROM comments WHERE post_id = :postId AND deleted = 0";
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->bindParam(":postId", $id);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
+        try{
+            $sql = "SELECT * FROM comments WHERE post_id = :postId AND deleted = 0";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindParam(":postId", $id);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_OBJ);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
     }
 
     /**
@@ -212,11 +228,15 @@ class Post extends DbConfig{
      * @throws Exception if the password and confirmation password do not match or if the account could not be created for any other reason
      */
     public function deleteComment($id){
-        $sql = "UPDATE comments SET deleted = 1 WHERE id = :id";
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->bindParam(":id", $id);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
+        try{
+            $sql = "UPDATE comments SET deleted = 1 WHERE id = :id";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindParam(":id", $id);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_OBJ);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
     }
 
 }
