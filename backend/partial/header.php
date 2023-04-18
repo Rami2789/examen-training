@@ -2,9 +2,9 @@
 
 session_start();
 if(isset($_SESSION['ingelogd']) && $_SESSION['ingelogd'] === true) {
-    if(isset($_SESSION['admin']) && $_SESSION['admin'] === true) {
+    if(isset($_SESSION['eigenaar']) && $_SESSION['eigenaar'] === true) {
         ?>
-        <a href="admin-dashboard.php">Home</a>
+        <a href="eigenaar-dashboard.php">Home</a>
         <a href="createuser.php">Create User</a>
         <a href="createpost.php">Create Posts</a>
         <a href="myposts.php">My Posts</a>
@@ -13,9 +13,9 @@ if(isset($_SESSION['ingelogd']) && $_SESSION['ingelogd'] === true) {
         <a href="profile.php">Profile</a>
         <a href="logout.php">Logout</a>
         <?php
-    } else if(isset($_SESSION['eigenaar']) && $_SESSION['eigenaar'] === true) {
+    } else if(isset($_SESSION['medewerker']) && $_SESSION['medewerker'] === true) {
         ?>
-        <a href="eigenaar-dashboard.php">Home</a>
+        <a href="admin-dashboard.php">Home</a>
         <a href="createuser.php">Create User</a>
         <a href="createpost.php">Create Posts</a>
         <a href="myposts.php">My Posts</a>
