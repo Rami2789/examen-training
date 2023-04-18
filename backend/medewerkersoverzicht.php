@@ -11,14 +11,14 @@ if (isset($_GET['delete'])) {
 
 <main>
     <section class="content">
-        <h1>All Klanten</h1>
-        <?php foreach ($user->getUserDataByRollenid(3) as $userData) { ?>
+        <h1>All Medewerkers</h1>
+        <?php foreach ($user->getUserDataByRollenid(2) as $userData) { ?>
             <article class="post">
             <h3><a href="userinfo.php?UserId=<?php echo $userData->id ?>"><?php echo $userData->voornaam; ?></a></h3>
             <?php echo $userData->tussenvoegsel . "<br>"; ?>
             <?php echo $userData->achternaam . "<br>"; ?>
             <a href="useredit.php?UserId=<?php echo $userData->id ?>">Edit</a>
-            <a name="deletepost" href="klantenoverzicht.php?UserId=<?php echo $userData->id ?>&delete=true" onclick="return deletePost();">Delete</a>
+            <a name="deletepost" href="useredit.php?UserId=<?php echo $userData->id ?>&delete=true" onclick="return deletePost();">Delete</a>
 
             </article>
         <?php } ?>

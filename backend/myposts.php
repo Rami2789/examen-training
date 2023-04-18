@@ -4,6 +4,10 @@ require_once 'class/post.php';
 require_once 'class/user.php';
 $post = new Post();
 
+if (isset($_GET['delete'])) {
+  $user->deletePost(isset($_POST['delete']) || $_GET['posts']);
+  header("Location: myposts.php");
+}
 ?>
 
     <main>

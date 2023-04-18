@@ -11,6 +11,7 @@ if(isset($_SESSION['ingelogd']) && $_SESSION['ingelogd'] === true) {
         <a href="allposts.php">All Posts</a>
         <a href="allusers.php">All Users</a>
         <a href="klantenoverzicht.php">Klanten Overzicht</a>
+        <a href="medewerkersoverzicht.php">Medewerkers Overzicht</a>
         <a href="profile.php">Profile</a>
         <a href="logout.php">Logout</a>
         <?php

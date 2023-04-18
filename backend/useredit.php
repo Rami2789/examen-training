@@ -11,9 +11,12 @@ if (isset($_GET['UserId'])) {
 if (isset($_POST['update'])) {
     $user->userUpdateEigenaar($_POST);
     header("Location: useredit.php?UserId=".$_POST['userId']);
-    exit(1);
 }
 
+if (isset($_GET['delete'])) {
+    $user->deleteUser(isset($_POST['delete']) || $_GET['UserId']);
+    header("Location: allusers.php");
+}
 
 ?>
 
