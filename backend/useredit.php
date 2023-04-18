@@ -28,9 +28,8 @@ if (isset($_POST['update'])) {
                 <input type="email" name="email" value="<?php echo $userData->email; ?>">
                 <input type="hidden" name="userId" value="<?php echo $userData->id; ?>">
                 <select name="option" class="pakket" required>
-                    <option name="basis" value="1" <?php if ($userData->rollenid == '1') { echo 'selected'; } ?>>Rami</option>
-                    <option name="extra" value="2" <?php if ($userData->rollenid == '2') { echo 'selected'; } ?>>Hanin</option>
-                    <option name="platinum" value="3" <?php if ($userData->rollenid == '3') { echo 'selected'; } ?>>Joshua</option>
+                    <option name="Medewerker" value="2" <?php if ($userData->rollenid == '2') { echo 'selected'; } ?>>Medewerker</option>
+                    <option name="Klant" value="3" <?php if ($userData->rollenid == '3') { echo 'selected'; } ?>>Klant</option>
                 </select>
                 <input type="submit" name="update" value="Update">
             </form>

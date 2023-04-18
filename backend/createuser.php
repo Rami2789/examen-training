@@ -38,12 +38,11 @@ if(isset($_POST['register'])){
 	    		<input type="email" name="email" placeholder="Email" required>
 	    		<input type="password" name="password" placeholder="Password" required>
 	    		<input type="password" name="conf-password" placeholder="Password" required>
-          <!-- <select name="option" class="pakket">
+          <select name="option" class="pakket">
                 <option name="" value=""></option>
-                <option name="basis" value="1">medewerker</option>
-                <option name="extra" value="2">klant</option>
-                <option name="platinum" value="3">eigenaar</option>
-          </select> -->
+                <option name="medewerker" value="2">medewerker</option>
+                <option name="klant" value="3">klant</option>
+          </select>
 	    		<input type="submit" name="register" value="Register">
 	    	</form>
     	</section>

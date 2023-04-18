@@ -31,7 +31,12 @@ class User extends DbConfig{
             $stmt->bindParam(":gebruikersnaam", $data['voornaam']);
             $stmt->bindParam(":email", $data['email']);
             // $stmt->bindParam(":telnr", $data['telnr']);
-            $stmt->bindParam(":rollenid", $data['option']);
+            // $stmt->bindParam(":rollenid", $data['option']);
+            if(isset($data['option'])) {
+                $stmt->bindParam(":rollenid", $data['option']);
+            } else {
+                $stmt->bindValue(":rollenid", 3);
+            }
             $stmt->bindParam(":password", $encryptedPassword);
             if(!$stmt->execute()){
                 throw new Exception("Account kon niet aangemaakt worden");
@@ -207,11 +212,12 @@ class User extends DbConfig{
             $stmt->bindParam(":gebruikersnaam", $data['voornaam']);
             $stmt->bindParam(":email", $data['email']);
             // $stmt->bindParam(":telnr", $data['telnr']);
-            if(isset($data['option'])) {
-                $stmt->bindParam(":rollenid", $data['option']);
-            } else {
-                $stmt->bindValue(":rollenid", 2);
-            }
+            $stmt->bindParam(":rollenid", $data['option']);
+            // if(isset($data['option'])) {
+            //     $stmt->bindParam(":rollenid", $data['option']);
+            // } else {
+            //     $stmt->bindValue(":rollenid", 2);
+            // }
             $stmt->bindParam(":password", $encryptedPassword);
             if(!$stmt->execute()){
                 throw new Exception("Account kon niet aangemaakt worden");
@@ -261,6 +267,19 @@ class User extends DbConfig{
             echo $e->getMessage();
         }
     }
+
+    public function getUserDataByRollenid($rollenid){
+        try{
+            $sql = "SELECT * FROM users WHERE rollenid = :rollenid AND deleted = 0";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindParam(":rollenid", $rollenid);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_OBJ);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+    
     
 
     /**
